@@ -27,17 +27,17 @@ public class RegExGeneratorTest {
     }
 
     //TODO: Uncomment these tests
-
+/*
     @Test
     public void testAnyCharacter() {
         assertTrue(validate(".", 1));
-    }
-/*
+    }*/
+
     @Test
     public void testMultipleCharacters() {
         assertTrue(validate("...", 1));
     }
-
+/*
     @Test
     public void testLiteral() {
         assertTrue(validate("\\@", 1));

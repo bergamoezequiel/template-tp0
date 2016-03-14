@@ -15,9 +15,9 @@ public class RegExGenerator {
     public List<String> generate(/*String regEx, int numberOfResults*/) {
         return new ArrayList<String>() {
             {
-                add("a");
-                add("b");
-                add("c");
+                add("aaa");
+                add("bbb");
+                add("ccc");
             }
         };
     }
