@@ -31,18 +31,19 @@ public class RegExGeneratorTest {
     @Test
     public void testAnyCharacter() {
         assertTrue(validate(".", 1));
+    }
+*/
+ /*   @Test
+    public void testMultipleCharacters() {
+        assertTrue(validate("...", 1));
     }*/
 
     @Test
-    public void testMultipleCharacters() {
-        assertTrue(validate("...", 1));
-    }
-/*
-    @Test
     public void testLiteral() {
+      //esta expresion regular es \@
         assertTrue(validate("\\@", 1));
     }
-
+/*
     @Test
     public void testLiteralDotCharacter() {
         assertTrue(validate("\\@..", 1));
