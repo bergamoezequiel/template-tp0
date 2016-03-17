@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class RegExGeneratorTest {
@@ -39,10 +40,49 @@ public class RegExGeneratorTest {
     }*/
 
     @Test
+    public void testSubSets() {
+        assertFalse(SetRegExp.isSubRegEx("["));
+        assertFalse(SetRegExp.isSubRegEx("[ab"));
+        assertTrue(SetRegExp.isSubRegEx("[abc]"));
+        assertTrue(SetRegExp.isSubRegEx("[\\[abc]"));
+        assertTrue(SetRegExp.isSubRegEx("[ab\\]c]"));
+        assertFalse(SetRegExp.isSubRegEx("[ac\\]"));
+        assertTrue(SetRegExp.isSubRegEx("[abc]?"));
+        assertTrue(SetRegExp.isSubRegEx("[ab\\]c]*"));
+        assertTrue(SetRegExp.isSubRegEx("[\\[abc]+"));
+        assertTrue(SetRegExp.isSubRegEx("[ac\\\\]"));
+
+    }
+
+    @Test
+    public void testSubPoint() {
+        assertFalse(PointRegExp.isSubRegEx(""));
+        assertFalse(PointRegExp.isSubRegEx("["));
+        assertTrue(PointRegExp.isSubRegEx("."));
+        assertTrue(PointRegExp.isSubRegEx(".?"));
+        assertTrue(PointRegExp.isSubRegEx(".*"));
+        assertTrue(PointRegExp.isSubRegEx(".+"));
+        assertFalse(PointRegExp.isSubRegEx(".3"));
+    }
+
+    @Test
+    public void testLiteralRegExp() {
+        assertFalse(LiteralRegExp.isSubRegEx(""));
+       /* assertTrue(LiteralRegExp.isSubRegEx("a"));
+        assertTrue(LiteralRegExp.isSubRegEx("a*"));
+        assertTrue(LiteralRegExp.isSubRegEx("a?"));
+        assertTrue(LiteralRegExp.isSubRegEx("a+"));
+        assertTrue(LiteralRegExp.isSubRegEx("\\?"));
+        assertFalse(LiteralRegExp.isSubRegEx("[?"));*/
+    }
+
+    @Test
     public void testLiteral() {
       //esta expresion regular es \@
+        System.out.println(SetRegExp.isSubRegEx("["));
         assertTrue(validate("\\@", 1));
     }
+
 /*
     @Test
     public void testLiteralDotCharacter() {

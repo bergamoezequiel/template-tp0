@@ -6,27 +6,27 @@ package ar.fiuba.tdd.template.tp0;
 public class SetRegExp {
 
     public static boolean isSubRegEx(String exp) {
-        if (  ( exp == null ) || ( exp.length() == 0 )  ) {
+
+        if (  ( exp == null ) || ( exp.length() < 3 )  ) {
 
             return false;
         }
+        if (tieneComodin(exp)) {
+            exp = exp.substring(0,exp.length() - 1);
+        }
         String primerChar = exp.substring(0,1);
+        String anteUltimoChar = exp.substring( exp.length() - 2,exp.length() - 1);
+        String ultimoChar = exp.substring( exp.length() - 1,exp.length() );
 
-        if ( primerChar.equals("[") ) {
-            if (exp.length() == 1) {
+        if ( primerChar.equals("[") && ultimoChar.equals("]") ) {
+             String antepenultimoChar = exp.substring( exp.length() - 3,exp.length() - 2);
+            if (anteUltimoChar.equals("\\") && !antepenultimoChar.equals("\\")  ) {
+                return false;
+            }
+            String intermediate = exp.substring(1,Math.max(1, exp.length() - 1));
+            if ( !HasIntermediateBrackets(intermediate) ) {
                 return true;
             }
-            System.out.println(exp.substring(1,Math.max(1, exp.length() - 1)));
-            String intermediate = exp.substring(1,Math.max(1, exp.length() - 1));
-           // System.out.println(HasIntermediateBrackets(intermediate));
-            if ( !HasIntermediateBrackets(intermediate) ) {
-                String ultimoChar = exp.substring(exp.length() - 1,exp.length());
-                if ( !ultimoChar.equals("[") ) {
-                    return true;
-                }
-
-            }
-
         }
         return false;
     }
@@ -52,5 +52,9 @@ public class SetRegExp {
 
         }
         return false;
+    }
+
+    private static boolean tieneComodin(String exp) {
+        return ( Comodin.esComodin(exp.substring( exp.length() - 1,exp.length())) );
     }
 }

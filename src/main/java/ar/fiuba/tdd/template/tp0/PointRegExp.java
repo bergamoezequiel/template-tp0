@@ -11,15 +11,19 @@ public class PointRegExp {
             return false;
         }
         String primerChar = exp.substring(0,1);
+
         String charPoint = "." ;
-        if ( ( exp.length() >= 1 ) && ( primerChar.equals(charPoint) ) ) {
+        if ( ( exp.length() == 1 ) && ( primerChar.equals(charPoint) ) ) {
+
             return true;
         }
-        if  ( exp.length() == 2 ) {
-            String segundoChar = exp.substring(1,2);
-
-            if ( Comodin.esComodin(segundoChar) ) {
-                return true;
+        else {
+            System.out.println("entro");
+            if (exp.length() == 2) {
+                String segundoChar = exp.substring(1, 2);
+                if (Comodin.esComodin(segundoChar) && primerChar.equals(charPoint)) {
+                    return true;
+                }
             }
         }
         return false;
