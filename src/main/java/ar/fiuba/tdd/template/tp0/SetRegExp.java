@@ -3,17 +3,14 @@ package ar.fiuba.tdd.template.tp0;
 import java.util.Random;
 
 
-public class SetRegExp extends AbstractRegularExpresion implements RegularExpresion {
-
-
-
+public class SetRegExp extends AbstractRegularExpresion  {
 
     public  boolean isSubRegEx(String exp) {
         if (  ( exp == null ) || ( exp.length() < 3 )  ) {
 
             return false;
         }
-        exp = quitarComodin(exp);
+        exp = removeComodin(exp);
         return validateStructure(exp);
 
 
@@ -58,17 +55,15 @@ public class SetRegExp extends AbstractRegularExpresion implements RegularExpres
         return false;
     }
 
-    public boolean hasComodin(String exp) {
-        return ( Comodin.esComodin(exp.substring( exp.length() - 1,exp.length())) );
+    public boolean hasQuantifier(String exp) {
+        return ( Quantifier.isQuantifier(exp.substring( exp.length() - 1,exp.length())) );
     }
-
-
 
     public String generateMatchingString(int max) {
         String intermediate;
         int maximo = determineMaximum(max);
         int minimo = determineMinimum();
-        if (hasComodin(regularE)) {
+        if (hasQuantifier(regularE)) {
             intermediate = regularE.substring(1, Math.max(1, regularE.length() - 2));
         } else {
             intermediate = regularE.substring(1, Math.max(1, regularE.length() - 1));
@@ -79,10 +74,10 @@ public class SetRegExp extends AbstractRegularExpresion implements RegularExpres
     }
 
     private String obtainRandomLiteral(String values) {
-        int minimo = 0;
-        int maximo = values.length() - 1;
+        int minimum = 0;
+        int maximum = values.length() - 1;
         Random rand = new Random();
-        int lugar = rand.nextInt((maximo - minimo) + 1) + minimo;
+        int lugar = rand.nextInt((maximum - minimum) + 1) + minimum;
         return (values.substring(lugar,lugar + 1));
     }
 
@@ -107,8 +102,8 @@ public class SetRegExp extends AbstractRegularExpresion implements RegularExpres
 
 
 
-    private String quitarComodin(String exp) {
-        if (hasComodin(exp)) {
+    private String removeComodin(String exp) {
+        if (hasQuantifier(exp)) {
             return exp.substring(0,exp.length() - 1);
         } else {
             return exp;

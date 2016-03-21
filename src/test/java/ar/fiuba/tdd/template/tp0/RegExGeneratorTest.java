@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.template.tp0;
 
+import ar.fiuba.tdd.template.tp0.exceptions.InvalidMaxLengthStringException;
+import ar.fiuba.tdd.template.tp0.exceptions.InvalidRegexException;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,7 +16,6 @@ public class RegExGeneratorTest {
 
     private boolean validate(String regEx, int numberOfResults) {
         RegExGenerator generator = new RegExGenerator(15);
-        // TODO: Uncomment parameters
         List<String> results = generator.generate(regEx, numberOfResults);
         // force matching the beginning and the end of the strings
         Pattern pattern = Pattern.compile("^" + regEx + "$");
@@ -28,11 +29,22 @@ public class RegExGeneratorTest {
                     (item1, item2) -> item1 && item2);
     }
 
-    //TODO: Uncomment these tests
+
+
+    @Test(expected = InvalidMaxLengthStringException.class)
+    public void testInvalidMaxLengthRegex() {
+        RegExGenerator generator = new RegExGenerator(3);
+        generator.generate("[ac]+.9\\\\", 10);
+    }
 
     @Test(expected = InvalidRegexException.class)
-    public void testDeberiaLanzarExcepcionAlIngresarUnNombreInvalido() {
+    public void testInvalidRegEx() {
         assertTrue(validate("[abc[z]", 100));
+    }
+
+    @Test(expected = InvalidRegexException.class)
+    public void testIncompleteRegex() {
+        assertTrue(validate("[abc", 100));
     }
 
     @Test
@@ -49,14 +61,13 @@ public class RegExGeneratorTest {
     public void testSubSets() {
         SetRegExp setRegExp = new SetRegExp();
         setRegExp.setExpresion("[\\\\asbiop]");
-       // System.out.println("finalmente"+setRegExp.generateMatchingString());
         assertFalse(setRegExp.isSubRegEx("["));
         assertFalse(setRegExp.isSubRegEx("[ab"));
         assertFalse(setRegExp.isSubRegEx("[abs[hf]"));
+        assertFalse(setRegExp.isSubRegEx("[ac\\]"));
         assertTrue(setRegExp.isSubRegEx("[abc]"));
         assertTrue(setRegExp.isSubRegEx("[\\[abc]"));
         assertTrue(setRegExp.isSubRegEx("[ab\\]c]"));
-        assertFalse(setRegExp.isSubRegEx("[ac\\]"));
         assertTrue(setRegExp.isSubRegEx("[abc]?"));
         assertTrue(setRegExp.isSubRegEx("[ab\\]c]*"));
         assertTrue(setRegExp.isSubRegEx("[\\[abc]+"));
@@ -69,29 +80,27 @@ public class RegExGeneratorTest {
 
         PointRegExp pointRegExp = new PointRegExp();
         pointRegExp.setExpresion(".*");
-        //System.out.println(pointRegExp.generateMatchingString());
         assertFalse(pointRegExp.isSubRegEx(""));
         assertFalse(pointRegExp.isSubRegEx("["));
+        assertFalse(pointRegExp.isSubRegEx(".3"));
         assertTrue(pointRegExp.isSubRegEx("."));
         assertTrue(pointRegExp.isSubRegEx(".?"));
         assertTrue(pointRegExp.isSubRegEx(".*"));
         assertTrue(pointRegExp.isSubRegEx(".+"));
-        assertFalse(pointRegExp.isSubRegEx(".3"));
+
     }
 
     @Test
     public void testMinimumExpresions() {
         LiteralRegExp literalRegExp = new LiteralRegExp();
         literalRegExp.setExpresion("\\[?");
-        assertTrue(literalRegExp.minimaExpresion() == 0);
+        assertTrue(literalRegExp.minimumExpresion() == 0);
         literalRegExp.setExpresion("a");
-        assertTrue(literalRegExp.minimaExpresion() == 1);
+        assertTrue(literalRegExp.minimumExpresion() == 1);
         literalRegExp.setExpresion("a*");
-        assertTrue(literalRegExp.minimaExpresion() == 0);
+        assertTrue(literalRegExp.minimumExpresion() == 0);
         literalRegExp.setExpresion("a?");
-        assertTrue(literalRegExp.minimaExpresion() == 0);
-
-
+        assertTrue(literalRegExp.minimumExpresion() == 0);
 
 
     }
@@ -99,71 +108,70 @@ public class RegExGeneratorTest {
 
     @Test
     public void testLiteralRegExp() {
-        System.out.println(Comodin.minimaCantidadDeApariciones("?"));
+        System.out.println(Quantifier.minimumOccurrences("?"));
         LiteralRegExp literalRegExp = new LiteralRegExp();
         literalRegExp.setExpresion("a+");
-        System.out.println("la cantidad minima es : " + literalRegExp.minimaExpresion());
+        assertFalse(literalRegExp.isSubRegEx("[?"));
         assertFalse(literalRegExp.isSubRegEx(""));
+        assertFalse(literalRegExp.isSubRegEx("d?c"));
         assertTrue(literalRegExp.isSubRegEx("a"));
         assertTrue(literalRegExp.isSubRegEx("c"));
         assertTrue(literalRegExp.isSubRegEx("a*"));
         assertTrue(literalRegExp.isSubRegEx("a?"));
         assertTrue(literalRegExp.isSubRegEx("a+"));
         assertTrue(literalRegExp.isSubRegEx("\\?"));
-        assertFalse(literalRegExp.isSubRegEx("[?"));
         assertTrue(literalRegExp.isSubRegEx("\\?*"));
-        assertFalse(literalRegExp.isSubRegEx("d?c"));
+
 
     }
 
     @Test
     public void testLiteral() {
-      //esta expresion regular es \@
-        assertTrue(validate("\\@", 100));
+        assertTrue(validate("\\@", 20));
     }
 
 
     @Test
     public void testDot() {
-        assertTrue(validate(".", 200));
-        assertTrue(validate(".+", 150));
-        assertTrue(validate(".?", 100));
-        assertTrue(validate(".*", 100));
+        assertTrue(validate(".", 20));
+        assertTrue(validate(".+", 20));
+        assertTrue(validate(".?", 20));
+        assertTrue(validate(".*", 20));
     }
 
     @Test
     public void testBasicLiteral() {
-        assertTrue(validate("7", 200));
-        assertTrue(validate("\\%", 150));
-        assertTrue(validate("\\%?", 150));
-        assertTrue(validate("\\%*", 150));
-        assertTrue(validate("\\%+", 150));
-        assertTrue(validate("t*", 150));
-        assertTrue(validate("t?", 150));
+        assertTrue(validate("7", 20));
+        assertTrue(validate("\\%", 20));
+        assertTrue(validate("\\%?", 20));
+        assertTrue(validate("\\%*", 20));
+        assertTrue(validate("\\%+", 20));
+        assertTrue(validate("t*", 20));
+        assertTrue(validate("t?", 20));
 
     }
 
 
     @Test
     public void testLiteralDotCharacter() {
-        assertTrue(validate("\\@..", 100));
+        assertTrue(validate("\\@..", 20));
     }
 
     @Test
     public void testZeroOrOneCharacter() {
-        assertTrue(validate("\\@.h?", 50));
+        assertTrue(validate("\\@.h?", 20));
     }
 
     @Test
     public void testCharacterSet() {
-        assertTrue(validate("[abc]", 100));
+        assertTrue(validate("[abc]", 20));
     }
 
     @Test
     public void testCharacterSetWithQuantifiers() {
-        assertTrue(validate("[abc]+", 100));
-        assertTrue(validate("[abc]*", 100));
-        assertTrue(validate("[abc]?", 100));
+        assertTrue(validate("[abc]+", 20));
+        assertTrue(validate("[abc]*", 20));
+        assertTrue(validate("[abc]?", 20));
 
     }
 
@@ -174,7 +182,7 @@ public class RegExGeneratorTest {
 
     @Test
     public void testComplexRegex2() {
-        assertTrue(validate("..+[a\\[]+d?c", 50));
+        assertTrue(validate("..+[a\\[]+d?c[df+v]+.\\.", 50));
     }
 
     @Test

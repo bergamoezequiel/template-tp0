@@ -3,7 +3,7 @@ package ar.fiuba.tdd.template.tp0;
 import java.util.Random;
 
 
-public abstract class AbstractRegularExpresion {
+public abstract class AbstractRegularExpresion implements RegularExpresion {
     protected String regularE = null;
 
     public void setExpresion(String exp) {
@@ -27,10 +27,10 @@ public abstract class AbstractRegularExpresion {
 
     protected int determineMinimum() {
         int minimum = 0;
-        if (!hasComodin(regularE)) {
+        if (!hasQuantifier(regularE)) {
             minimum = 1;
         } else {
-            int minimumLengthQuantifier = Comodin.minlenght(regularE.substring(regularE.length() - 1, regularE.length()));
+            int minimumLengthQuantifier = Quantifier.minlenght(regularE.substring(regularE.length() - 1, regularE.length()));
             if (minimum < minimumLengthQuantifier ) {
                 minimum = minimumLengthQuantifier;
             }
@@ -40,10 +40,10 @@ public abstract class AbstractRegularExpresion {
 
     protected int determineMaximum(int maxi) {
         int maximum = maxi;
-        if (!hasComodin(regularE)) {
+        if (!hasQuantifier(regularE)) {
             maximum = 1;
         } else {
-            int maximumLengthQuantifier = Comodin.maxlenght(regularE.substring( regularE.length() - 1, regularE.length()));
+            int maximumLengthQuantifier = Quantifier.maxlenght(regularE.substring( regularE.length() - 1, regularE.length()));
             if (maximum > maximumLengthQuantifier ) {
                 maximum = maximumLengthQuantifier;
             }
@@ -52,15 +52,15 @@ public abstract class AbstractRegularExpresion {
         return maximum;
     }
 
-    public int minimaExpresion() {
+    public int minimumExpresion() {
         String quantifier = regularE.substring(this.regularE.length() - 1, this.regularE.length());
-        if (Comodin.esComodin(quantifier)) {
-            return Comodin.minimaCantidadDeApariciones(quantifier);
+        if (Quantifier.isQuantifier(quantifier)) {
+            return Quantifier.minimumOccurrences(quantifier);
         } else {
             return 1;
         }
     }
 
-    public abstract boolean hasComodin(String regularE);
+    public abstract boolean hasQuantifier(String regularE);
 
 }

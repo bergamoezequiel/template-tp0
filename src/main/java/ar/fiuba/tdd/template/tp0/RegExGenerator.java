@@ -1,5 +1,7 @@
 package ar.fiuba.tdd.template.tp0;
 
+import ar.fiuba.tdd.template.tp0.exceptions.InvalidMaxLengthStringException;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,23 +24,21 @@ public class RegExGenerator {
         int numberOfQualifiers = obtenerCantidadDeComodines(regexList);
 
         if (minimaCantidad > maxLength) {
-            System.out.println("ERRORRRRR MAX ES MENOR Q LA MINiMA CANTIDAD");
+            throw new InvalidMaxLengthStringException();
         }
         int available = maxLength - minimaCantidad;
         int forDistribute = 0;
         if (numberOfQualifiers != 0) {
             forDistribute = available / numberOfQualifiers;
         }
-        ArrayList<String> returnList = generarLista(numberOfResults,forDistribute);
-
-        return returnList;
+        return generarLista(numberOfResults,forDistribute);
 
     }
 
     private int obtenerMinimaCantidad(LinkedList<RegularExpresion> listaDeRegex) {
         int minimaCantidad = 0;
         for (RegularExpresion reg : listaDeRegex) {
-            minimaCantidad = minimaCantidad + reg.minimaExpresion();
+            minimaCantidad = minimaCantidad + reg.minimumExpresion();
         }
         return minimaCantidad;
     }
@@ -46,7 +46,7 @@ public class RegExGenerator {
     private int obtenerCantidadDeComodines(LinkedList<RegularExpresion> listaDeRegex) {
         int numberOfQualifiers = 0;
         for (RegularExpresion reg : listaDeRegex) {
-            if (reg.hasComodin(reg.getExpresion())) {
+            if (reg.hasQuantifier(reg.getExpresion())) {
                 numberOfQualifiers = numberOfQualifiers + 1;
             }
         }
@@ -56,18 +56,18 @@ public class RegExGenerator {
     private ArrayList<String> generarLista(int numberOfResults,int forDistribute) {
         ArrayList<String> returnList = new ArrayList<>();
         for (int i = 1;i <= numberOfResults;i++) {
-            String cadena = "";
+            String chain = "";
             String aleat;
             int assignedMax = 0;
             for (RegularExpresion reg : regexList) {
-                assignedMax = assignedMax + reg.minimaExpresion();
-                if ( reg.hasComodin(reg.getExpresion()) ) {
+                assignedMax = assignedMax + reg.minimumExpresion();
+                if ( reg.hasQuantifier(reg.getExpresion()) ) {
                     assignedMax = assignedMax + forDistribute;
                 }
                 aleat = reg.generateMatchingString(assignedMax);
-                cadena = cadena.concat(aleat);
+                chain = chain.concat(aleat);
             }
-            returnList.add(cadena);
+            returnList.add(chain);
         }
         return returnList;
     }

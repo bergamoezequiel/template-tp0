@@ -1,10 +1,7 @@
 package ar.fiuba.tdd.template.tp0;
 
-/**
- * Created by cbergamo on 16/03/2016.
- */
 
-public class Comodin {
+public class Quantifier {
 
     public static int maxlenght(String comod) {
         if (comod.equals("?")) {
@@ -22,12 +19,12 @@ public class Comodin {
         }
     }
 
-    public static boolean esComodin(String com) {
+    public static boolean isQuantifier(String com) {
         return ( com.equals("?") || com.equals("*") || com.equals("+") );
     }
 
-    public static int  minimaCantidadDeApariciones(String com) {
-        if (!esComodin(com)) {
+    public static int  minimumOccurrences(String com) {
+        if (!isQuantifier(com)) {
             return -1;
         }
 

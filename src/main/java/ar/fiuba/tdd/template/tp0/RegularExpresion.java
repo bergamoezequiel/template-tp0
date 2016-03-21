@@ -1,8 +1,5 @@
 package ar.fiuba.tdd.template.tp0;
 
-/**
- * Created by cbergamo on 17/03/2016.
- */
 public interface RegularExpresion {
 
     boolean isSubRegEx(String exp);
@@ -11,10 +8,10 @@ public interface RegularExpresion {
 
     String getExpresion();
 
-    int minimaExpresion();
+    int minimumExpresion();
 
     String generateMatchingString(int max);
 
-    boolean hasComodin(String exp);
+    boolean hasQuantifier(String exp);
 
 }

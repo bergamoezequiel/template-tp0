@@ -1,6 +1,8 @@
 package ar.fiuba.tdd.template.tp0;
 
 
+import ar.fiuba.tdd.template.tp0.exceptions.InvalidRegexException;
+
 import java.util.LinkedList;
 
 

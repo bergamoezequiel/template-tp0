@@ -3,7 +3,7 @@ package ar.fiuba.tdd.template.tp0;
 import java.util.Random;
 
 
-public class PointRegExp extends AbstractRegularExpresion implements RegularExpresion {
+public class PointRegExp extends AbstractRegularExpresion  {
 
 
     public  boolean isSubRegEx(String exp) {
@@ -18,7 +18,7 @@ public class PointRegExp extends AbstractRegularExpresion implements RegularExpr
         if ( ( exp.length() == 1 ) && ( firstChar.equals(charPoint) ) ) {
             return true;
         } else {
-            if (exp.length() == 2 && Comodin.esComodin(exp.substring(1, 2)) && firstChar.equals(charPoint)) {
+            if (exp.length() == 2 && Quantifier.isQuantifier(exp.substring(1, 2)) && firstChar.equals(charPoint)) {
                 return true;
 
             }
@@ -30,17 +30,17 @@ public class PointRegExp extends AbstractRegularExpresion implements RegularExpr
 
 
 
-    public boolean hasComodin(String exp) {
-        return (exp.length() == 2 && Comodin.esComodin(exp.substring(1,2)));
+    public boolean hasQuantifier(String exp) {
+        return (exp.length() == 2 && Quantifier.isQuantifier(exp.substring(1,2)));
     }
 
     public String generateMatchingString(int max) {
-        int maximo = determineMaximum(max);
-        int minimo = determineMinimum();
+        int maximum = determineMaximum(max);
+        int minimum = determineMinimum();
         Random ran = new Random();
         char car = (char)(ran.nextInt(50) + 35);
         String literal = String.valueOf(car);
-        return obtainLiteralxTimes(minimo,maximo,literal);
+        return obtainLiteralxTimes(minimum,maximum,literal);
 
 
     }
