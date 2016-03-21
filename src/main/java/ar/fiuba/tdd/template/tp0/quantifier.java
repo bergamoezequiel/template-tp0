@@ -1,8 +1,9 @@
 package ar.fiuba.tdd.template.tp0;
 
-
+/**
+ * Created by cbergamo on 21/03/2016.
+ */
 public class Quantifier {
-
     public static int maxlenght(String comod) {
         if (comod.equals("?")) {
             return 1;
@@ -37,5 +38,7 @@ public class Quantifier {
 
 
 }
+
+
 
 
