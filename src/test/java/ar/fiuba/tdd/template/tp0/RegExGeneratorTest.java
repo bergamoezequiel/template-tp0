@@ -43,6 +43,11 @@ public class RegExGeneratorTest {
     }
 
     @Test(expected = InvalidRegexException.class)
+    public void testInvalidRegEx2() {
+        assertTrue(validate("*", 100));
+    }
+
+    @Test(expected = InvalidRegexException.class)
     public void testIncompleteRegex() {
         assertTrue(validate("[abc", 100));
     }

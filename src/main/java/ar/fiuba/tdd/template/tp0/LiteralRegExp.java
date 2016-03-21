@@ -41,7 +41,7 @@ public class LiteralRegExp extends AbstractRegularExpresion  {
     }
 
     private static boolean notIsReservedCaracter(String exp) {
-        String specialCarater = ".[]+-*?";
+        String specialCarater = ".$[]+-*?";
         return (!specialCarater.contains(exp));
     }
 
