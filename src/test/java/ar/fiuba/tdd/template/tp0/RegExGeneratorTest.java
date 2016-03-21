@@ -30,6 +30,11 @@ public class RegExGeneratorTest {
 
     //TODO: Uncomment these tests
 
+    @Test(expected = InvalidRegexException.class)
+    public void testDeberiaLanzarExcepcionAlIngresarUnNombreInvalido() {
+        assertTrue(validate("[abc[z]", 100));
+    }
+
     @Test
     public void testAnyCharacter() {
         assertTrue(validate(".", 100));

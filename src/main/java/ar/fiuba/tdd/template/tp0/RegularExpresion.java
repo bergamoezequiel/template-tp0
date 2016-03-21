@@ -15,6 +15,6 @@ public interface RegularExpresion {
 
     String generateMatchingString(int max);
 
-    boolean tieneComodin(String exp);
+    boolean hasComodin(String exp);
 
 }

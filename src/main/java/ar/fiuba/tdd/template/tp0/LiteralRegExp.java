@@ -12,32 +12,29 @@ public class LiteralRegExp extends AbstractRegularExpresion implements RegularEx
         if (  ( exp == null ) || ( exp.length() == 0 )  ) {
             return false;
         }
-        if (exp.length() == 3 && tieneComodin(exp) && estaEscapado(exp)) {
+        if (exp.length() == 3 && hasComodin(exp) && estaEscapado(exp)) {
             return true;
         }
 
-        boolean tieneLong2Valida = tieneEstructura2CaracteresValida(exp);
-        return (tieneLong2Valida || (exp.length() == 1 && noEsCaracterReservado(exp)));
+        boolean hasValidLong2 = has2ValidStructure(exp);
+        return (hasValidLong2 || (exp.length() == 1 && noEsCaracterReservado(exp)));
     }
 
-    public boolean tieneEstructura2CaracteresValida(String exp) {
+    public boolean has2ValidStructure(String exp) {
         if (exp.length() == 2) {
             if ( estaEscapado(exp) ) {
                 return true;
-            }
-            else {
-                if ( tieneComodin(exp) ) {
-                    String primerChar = exp.substring(0,1);
-                    System.out.println("entro a verificar si es comun luego de comn");
-                    System.out.println(exp);
-                    return noEsCaracterReservado(primerChar);
+            } else {
+                if ( hasComodin(exp) ) {
+                    String firstChar = exp.substring(0,1);
+                    return noEsCaracterReservado(firstChar);
                 }
             }
         }
         return false;
     }
 
-    public  boolean tieneComodin(String exp) {
+    public  boolean hasComodin(String exp) {
         return ( Comodin.esComodin(exp.substring( exp.length() - 1,exp.length())) );
     }
 
@@ -48,20 +45,19 @@ public class LiteralRegExp extends AbstractRegularExpresion implements RegularEx
     }
 
     private static boolean noEsCaracterReservado(String exp) {
-        String caracteresEspeciales = ".[]+-*?";
-        return (!caracteresEspeciales.contains(exp));
+        String specialCarater = ".[]+-*?";
+        return (!specialCarater.contains(exp));
     }
 
 
 
     public String generateMatchingString(int maxi) {
 
-        int maximo = determinarMaximo(maxi);
-        int minimo = determinarMinimo();
-        System.out.println("La cantidad maxima es " + maximo + " y la minima es " + minimo);
+        int maximum = determineMaximum(maxi);
+        int minimum = determineMinimum();
         String literal = obetenerLiteral();
 
-        return obtenerLiteralxCantidadDeVeces(minimo,maximo,literal);
+        return obtainLiteralxTimes(minimum,maximum,literal);
 
     }
 
@@ -85,9 +81,8 @@ public class LiteralRegExp extends AbstractRegularExpresion implements RegularEx
         String literal = "";
         if ( estaEscapado(regularE) ) {
             literal = regularE.substring(1,2);
-        }
-        else {
-            if ( tieneComodin(regularE) ) {
+        } else {
+            if ( hasComodin(regularE) ) {
                 literal = regularE.substring(0,1);
 
             }

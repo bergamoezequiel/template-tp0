@@ -1,60 +1,55 @@
 package ar.fiuba.tdd.template.tp0;
 
 
-
 import java.util.LinkedList;
 
 
-/**
- * Created by cbergamo on 17/03/2016.
- */
+
 public class Parser {
-    private LinkedList<RegularExpresion> listaADevolver;
+    private LinkedList<RegularExpresion> listToReturn;
 
     private String sub = "";
     RegularExpresion regAnt = null;
-    RegularExpresion regActual;
+    RegularExpresion currentReg;
 
     public  LinkedList<RegularExpresion> parsear(String reg) {
-        listaADevolver =  new LinkedList<>();
+        listToReturn =  new LinkedList<>();
         int iter = 1;
-        String anterior;
+        String previous;
         while ( iter <= reg.length() ) {
-            anterior = sub ;
+            previous = sub ;
             sub = reg.substring(0, iter);
-            regActual = getRegularExpresion(sub);
-            if (regActual == null && regAnt != null) {
-                regAnt.setExpresion(anterior);
-                listaADevolver.addLast(regAnt);
+            currentReg = getRegularExpresion(sub);
+            if (currentReg == null && regAnt != null) {
+                regAnt.setExpresion(previous);
+                listToReturn.addLast(regAnt);
                 reg = reg.substring(iter - 1);
                 iter = 1;
                 regAnt = null;
-            }
-            else {
+            } else {
                 iter++;
-                regAnt = regActual;
+                regAnt = currentReg;
             }
         }
 
-        revisarUltimoPedazo(sub,regAnt);
+        checkLastPiece(sub,regAnt);
 
-        return listaADevolver;
+        return listToReturn;
 
     }
 
-    private void revisarUltimoPedazo(String sub,RegularExpresion regAnt) {
-        RegularExpresion regActual = getRegularExpresion(sub);
+    private void checkLastPiece(String sub,RegularExpresion regAnt) {
+        RegularExpresion currentReg = getRegularExpresion(sub);
 
-        if (regActual != null) {
+        if (currentReg != null) {
             if (regAnt != null) {
                 regAnt.setExpresion(sub);
             }
-            listaADevolver.addLast(regAnt);
-            System.out.println("falto la ultima:  " + sub);
-        }
-        else {
+            listToReturn.addLast(regAnt);
+
+        } else {
             if (!sub.equals("")) {
-                System.out.println("errorrrrrrrr " + sub);
+                throw new InvalidRegexException() ;
             }
 
         }
@@ -70,8 +65,8 @@ public class Parser {
     }
 
     public RegularExpresion getRegularExpresion(String regex) {
-        LinkedList<RegularExpresion> listaRegEx = generarRegExList();
-        for (RegularExpresion atomicRegEx : listaRegEx) {
+        LinkedList<RegularExpresion> regExlist = generarRegExList();
+        for (RegularExpresion atomicRegEx : regExlist) {
             if (atomicRegEx.isSubRegEx(regex)) {
                 return atomicRegEx;
             }

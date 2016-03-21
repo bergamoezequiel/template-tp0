@@ -9,8 +9,7 @@ public class Comodin {
     public static int maxlenght(String comod) {
         if (comod.equals("?")) {
             return 1;
-        }
-        else {
+        } else {
             return 99999;
         }
     }
@@ -18,8 +17,7 @@ public class Comodin {
     public static int minlenght(String comod) {
         if (comod.equals("+")) {
             return 1;
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -35,8 +33,7 @@ public class Comodin {
 
         if (com.equals("?") || com.equals("*")) {
             return 0;
-        }
-        else {
+        } else {
             return 1;
         }
     }
